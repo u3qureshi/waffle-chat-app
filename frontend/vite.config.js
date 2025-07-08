@@ -9,6 +9,9 @@ export default defineConfig({
     react(),
     svgr()
     ],  
+    define: {
+    "process.env": {}, // Prevent process.env errors
+  },
     resolve: {
       alias: {
         '@': Path.resolve(__dirname, './src'),

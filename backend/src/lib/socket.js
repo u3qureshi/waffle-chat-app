@@ -7,9 +7,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173"],
+    origin: process.env.CLIENT_URL || "https://waffle-chat-app.onrender.com",
+    methods: ["GET", "POST"],
+    credentials: true,
   },
+  path: "/socket.io", // Explicitly set path
 });
+// Function to get the socket ID of a user by their userId
 
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
