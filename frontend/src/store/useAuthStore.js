@@ -18,86 +18,110 @@ Usage:
 It uses hooks for accessing and updating the state. It does not rely on React Context API.
 Benefits:
 Simplifies state management for complex applications by avoiding prop drilling. It has a simple and intuitive API.*/
-import {create} from "zustand";
+import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
-import { data } from "react-router-dom";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
 
-export const useAuthStore = create((set) => ({
-    authUser: null,
-    isSigningUp: false,
-    isLoggingIn: false,
-    isUpdatingProfile: false,
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
-    isCheckingAuth: true,
+export const useAuthStore = create((set, get) => ({
+  authUser: null,
+  isSigningUp: false,
+  isLoggingIn: false,
+  isUpdatingProfile: false,
+  isCheckingAuth: true,
+  onlineUsers: [],
+  socket: null,
 
-    checkAuth: async() => {
-        try {
-            // Assuming axiosInstance is already defined [lib/axios.js] and configured with the base URL (http:localhost:5001/api)
-            const response = await axiosInstance.get('/auth/check');
-            // If the request is successful, set the authUser state with the user data
-            // This will be called when the app loads or refreshes to check if the user is authenticated
-            set({ authUser: response.data });
-        } catch (error) {
-            // If there's an error (e.g., user is not authenticated), set authUser to null
-            set({ authUser: null });
-            console.error("Error checking authentication:", error);
-        } finally {
-            // Regardless of success or failure, set isCheckingAuth to false
-            set({ isCheckingAuth: false });
-        }
-    },
+  checkAuth: async () => {
+    try {
+      const res = await axiosInstance.get("/auth/check");
 
-    signup: async (data) => {
-        set({ isSigningUp: true });
-        try {
-            const response = await axiosInstance.post('/auth/signup', data);
-            set({ authUser: response.data});
-            toast.success("Account created successfully!");
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to create account");
-        } finally{
-            set({ isSigningUp: false });
-        }   
+      set({ authUser: res.data });
+      get().connectSocket();
+    } catch (error) {
+      console.log("Error in checkAuth:", error);
+      set({ authUser: null });
+    } finally {
+      set({ isCheckingAuth: false });
+    }
+  },
 
-    },
+  signup: async (data) => {
+    set({ isSigningUp: true });
+    try {
+      const res = await axiosInstance.post("/auth/signup", data);
+      set({ authUser: res.data });
+      toast.success("Account created successfully");
+      get().connectSocket();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isSigningUp: false });
+    }
+  },
 
-    login: async (data) => {
-        set({ isLoggingIn: true });
-        try {
-            const response = await axiosInstance.post('/auth/login', data);
-            set({ authUser: response.data.user });
-            toast.success("Logged in successfully!");
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to log in");
-        } finally {
-            set({ isLoggingIn: false });
-        }
+  login: async (data) => {
+    set({ isLoggingIn: true });
+    try {
+      const res = await axiosInstance.post("/auth/login", data);
+      set({ authUser: res.data });
+      toast.success("Logged in successfully");
 
-    },
+      get().connectSocket(); // Connect socket after successful login
 
-    logout: async () => {
-        try {
-            await axiosInstance.post('/auth/logout');
-            set({ authUser: null });
-            toast.success("Logged out successfully!");
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to log out");
-            
-        }
-    },
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isLoggingIn: false });
+    }
+  },
 
-    updateProfile: async (data) => {
-        set({ isUpdatingProfile: true });
-        try {
-            const response = await axiosInstance.put('/auth/update-profile', data);
-            console.log("Profile updated successfully:", response.data);
-            set({ authUser: response.data });
-            toast.success("Profile updated successfully!");
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to update profile");
-        } finally {
-            set({ isUpdatingProfile: false });
-        }
-    },
+  logout: async () => {
+    try {
+      await axiosInstance.post("/auth/logout");
+      set({ authUser: null });
+      toast.success("Logged out successfully");
+      get().disconnectSocket();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
+  updateProfile: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-profile", data);
+      set({ authUser: res.data });
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.log("error in update profile:", error);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isUpdatingProfile: false });
+    }
+  },
+
+  connectSocket: () => {
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
+    console.log("Connecting socket...");
+    console.log(authUser);
+    const socket = io(BASE_URL, {
+      query: {
+        userId: authUser._id,
+      },
+    });
+    socket.connect();
+    
+    set({ socket: socket }); // Store the socket instance in the state
+
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+    });
+  },
+  disconnectSocket: () => {
+    if (get().socket?.connected) get().socket.disconnect();
+  },
 }));

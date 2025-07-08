@@ -12,7 +12,7 @@ import {
 import { useAuthStore } from "../store/useAuthStore.js";
 import AuthImagePattern from "../components/AuthImagePattern.jsx";
 import toast from "react-hot-toast";
-import Logo from '../assets/images/logo.svg?react';
+import Logo from '../../public/images/logo.svg?react'; // Adjust the path as necessary
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);

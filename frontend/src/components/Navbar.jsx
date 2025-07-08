@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { LogOut, MessageSquare, Settings, User } from "lucide-react";
-import Logo from '../assets/images/logo.svg?react';
+import Logo from '../../public/images/logo.svg?react';
 
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
@@ -26,7 +26,7 @@ const Navbar = () => {
             <Link
               to={"/settings"}
               className={`
-              btn btn-sm gap-2 transition-colors bg-dijon-100/30 border-1 border-brown-200
+              btn btn-sm gap-2 transition-colors bg-dijon-100/30 border border-1 border-brown-200
               
               `}
             >
@@ -36,12 +36,12 @@ const Navbar = () => {
 
             {authUser && (
               <>
-                <Link to={"/profile"} className={`btn btn-sm gap-2 bg-dijon-100/30 border-1 border-brown-200`}>
+                <Link to={"/profile"} className={`btn btn-sm gap-2 bg-dijon-100/30 border border-1 border-brown-200`}>
                   <User className="size-5 stroke-brown-900" />
                   <span className="hidden sm:inline text-brown-900">Profile</span>
                 </Link>
 
-                <button className="p-1 rounded-md flex gap-2 items-center transition-colors border-1 border-brown-200" onClick={logout}>
+                <button className="p-1 rounded-md flex gap-2 items-center transition-colors " onClick={logout}>
                   <LogOut className="size-5 stroke-brown-900" />
                   <span className="hidden sm:inline text-brown-900">Logout</span>
                 </button>

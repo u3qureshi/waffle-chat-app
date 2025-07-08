@@ -10,11 +10,9 @@ import { connectToDB } from "./lib/db.js";
 
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
+import { app, server } from "./lib/socket.js";
 
 dotenv.config();  
-
-
-const app = express();
 
 const PORT = process.env.PORT;
 const __dirname = path.resolve();
@@ -35,7 +33,17 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.listen(PORT, () => {
+if(process.env.NODE_ENV === "production") {
+  // Serve static files from the frontend build directory
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  // Serve the index.html file for all other routes
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
+
+server.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
   connectToDB();
 });
