@@ -34,17 +34,18 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  // Serve static files from the frontend
+  // Serve static files from frontend
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  // Only serve index.html for non-API, non-socket requests
+  // Handle all routes *except API and socket.io* with React
   app.get("*", (req, res, next) => {
     if (req.originalUrl.startsWith("/api") || req.originalUrl.startsWith("/socket.io")) {
-      return next(); // Skip React for API or socket requests
+      return next(); // Let Express/Socket.IO handle these
     }
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
+
 
 
 server.listen(PORT, () => {
