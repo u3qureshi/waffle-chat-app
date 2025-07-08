@@ -38,12 +38,10 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
   // Handle all routes *except API and socket.io* with React
-  app.get("*", (req, res, next) => {
-    if (req.originalUrl.startsWith("/api") || req.originalUrl.startsWith("/socket.io")) {
-      return next(); // Let Express/Socket.IO handle these
-    }
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-  });
+  app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+});
+
 }
 
 
