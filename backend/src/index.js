@@ -19,7 +19,7 @@ const __dirname = path.resolve();
 
 
 // 🛠️ Middleware with increased size limit
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 
@@ -33,15 +33,19 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-if(process.env.NODE_ENV === "production") {
-  // Serve static files from the frontend build directory
+if (process.env.NODE_ENV === "production") {
+  // Serve static files from the frontend
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  // Serve the index.html file for all other routes
-  app.get("*", (req, res) => {
+  // Only serve index.html for non-API, non-socket requests
+  app.get("*", (req, res, next) => {
+    if (req.originalUrl.startsWith("/api") || req.originalUrl.startsWith("/socket.io")) {
+      return next(); // Skip React for API or socket requests
+    }
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
   });
 }
+
 
 server.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
