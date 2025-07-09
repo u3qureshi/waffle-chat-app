@@ -2,10 +2,18 @@ import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Camera, Mail, User } from "lucide-react";
 import avatar from '../../public/images/avatar.png';
+import { useEffect } from "react";
 
 const ProfilePage = () => {
-  const { authUser, isUpdatingProfile, updateProfile, isCheckingAuth} = useAuthStore();
-  const [selectedImg, setSelectedImg] = useState(null);
+const { authUser, isUpdatingProfile, updateProfile, isCheckingAuth, checkAuth } = useAuthStore();
+const [selectedImg, setSelectedImg] = useState(null);
+
+useEffect(() => {
+  if (!authUser) {
+    checkAuth();
+  }
+}, []);
+
 
   if (isCheckingAuth) {
     return (
