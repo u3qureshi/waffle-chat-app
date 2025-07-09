@@ -2,35 +2,34 @@
 A **real-time chat application** with user authentication, profile management, theme customization, and live updates of online users.  
 
 🌐 **Live Demo**: [waffle-chat-app.onrender.com](https://waffle-chat-app.onrender.com)  
-📂 **GitHub Repo**: [github.com/u3qureshi/waffle-chat-app](https://github.com/u3qureshi/waffle-chat-app)
 
----
+--------------
 
 ## ✨ Features
 
-- 👤 **User Authentication**
+- **User Authentication**
   - Sign up, Login, Logout
   - JWT-based authentication with protected API routes
-- 🖊️ **Profile Management**
+- **Profile Management**
   - Upload profile pictures (Cloudinary integration)
   - Edit name, username, and personal details
-- 💬 **Real-time Messaging**
+- **Real-time Messaging**
   - WebSocket-powered chat using **Socket.IO**
   - Live updates of online users
   - Typing indicators (optional enhancement)
-- 🖼️ **Image Sharing**
+- **Image Sharing**
   - Send images in chat with previews
-- 🎨 **Themes & Responsive UI**
+- **Themes & Responsive UI**
   - Mobile-first design with Tailwind CSS + DaisyUI
   - Light & Dark mode support
-- 🚀 **Deployment**
+- **Deployment**
   - Backend & Frontend deployed on Render
 
 ---
 
 ## 🛠️ Tech Stack
 
-### 🌐 Frontend
+### Frontend
 - ⚛️ React (with Hooks)
 - Zustand (Lightweight state management)
 - Vite (Fast build tool)
@@ -38,7 +37,7 @@ A **real-time chat application** with user authentication, profile management, t
 - Axios (API client)
 - React Hot Toast (Toast notifications)
 
-### 🖥 Backend
+### Backend
 - Node.js + Express 5
 - MongoDB Atlas (Cloud Database)
 - Mongoose (ODM)
@@ -48,7 +47,7 @@ A **real-time chat application** with user authentication, profile management, t
 - bcrypt (Password hashing)
 - CORS, Cookie-Parser
 
-### ☁️ Deployment
+### Deployment
 - **Render** (Hosting Backend & Frontend)
 - **MongoDB Atlas** (Database)
 
