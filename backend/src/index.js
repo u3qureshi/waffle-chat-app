@@ -19,11 +19,10 @@ const __dirname = path.resolve();
 
 
 // 🛠️ Middleware with increased size limit
-app.use(express.json());
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+app.use(express.json({ limit: "20mb" })); // Increase as needed
+app.use(express.urlencoded({ limit: "20mb", extended: true })); // Increase as needed
 
-app.use(express.json()); // Middleware to parse JSON bodies
 app.use(cookieParser()); // Middleware to parse cookies
 app.use(cors({
   origin: "http://localhost:5173", // Allow requests from the client URL

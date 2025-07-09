@@ -19,12 +19,10 @@ export const signup = async (req, res) => {
     }
     // Validate password format
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(password)) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number",
-        });
+      return res.status(400).json({
+        message:
+          "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number",
+      });
     }
     // Validate username length
     if (username.length < 3 || username.length > 20) {
@@ -34,29 +32,22 @@ export const signup = async (req, res) => {
     }
     // Validate full name length
     if (fullName.length < 3 || fullName.length > 50) {
-      return res
-        .status(400)
-        .json({
-          message: "Full name must be between 3 and 50 characters long",
-        });
+      return res.status(400).json({
+        message: "Full name must be between 3 and 50 characters long",
+      });
     }
     // Validate username format
     if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Username can only contain letters, numbers, and underscores",
-        });
+      return res.status(400).json({
+        message: "Username can only contain letters, numbers, and underscores",
+      });
     }
     //Validate full name format
     if (!/^[a-zA-Z0-9_ ]+$/.test(fullName)) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Full name can only contain letters, numbers, spaces and underscores",
-        });
+      return res.status(400).json({
+        message:
+          "Full name can only contain letters, numbers, spaces and underscores",
+      });
     }
     // Validate password length
     if (password.length < 6) {
@@ -138,13 +129,13 @@ export const login = async (req, res) => {
     // If the password is valid, generate a JWT token
     generateToken(user._id, res);
     res.status(200).json({
-    _id: user._id,
-    username: user.username,
-    email: user.email,
-    fullName: user.fullName,
-    profilePicture: user.profilePicture || "",
-    createdAt: user.createdAt
-});
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      fullName: user.fullName,
+      profilePicture: user.profilePicture || "",
+      createdAt: user.createdAt,
+    });
   } catch (error) {
     console.error("Error in login controller:", error.message);
     res.status(500).json({ message: "Internal server error" });
