@@ -50,7 +50,7 @@ function LoginPage() {
                 <input
                   type="text"
                   className={`input input-bordered w-full pl-10 selection:bg-yellow-200 focus:border-brown-400 focus:outline-yellow-200`}
-                  placeholder="JohnHoe@example.com"
+                  placeholder="JohnCro@example.com"
                   value={formData.emailOrUsername}
                   onChange={(e) => setFormData({ ...formData, emailOrUsername: e.target.value })}
                 />

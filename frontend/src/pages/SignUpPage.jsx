@@ -106,7 +106,7 @@ const SignUpPage = () => {
                   type="text"
                   className={`input input-bordered w-full pl-10 selection:bg-yellow-200 focus:outline-yellow-200
                     focus:border-brown-400`}
-                  placeholder="John Hoe"
+                  placeholder="John Cro"
                   value={formData.fullName}
                   onChange={(e) =>
                     setFormData({ ...formData, fullName: e.target.value })
@@ -129,7 +129,7 @@ const SignUpPage = () => {
                   type="text"
                   className={`input input-bordered w-full pl-10 selection:bg-yellow-200 focus:outline-yellow-200
                     focus:border-brown-400`}
-                  placeholder="JohnHoe69"
+                  placeholder="JohnCro69"
                   value={formData.username}
                   onChange={(e) =>
                     setFormData({ ...formData, username: e.target.value })
@@ -152,7 +152,7 @@ const SignUpPage = () => {
                   type="text"
                   className={`input input-bordered w-full pl-10 selection:bg-yellow-200 focus:outline-yellow-200
                     focus:border-brown-400`}
-                  placeholder="JohnHoe91@example.com"
+                  placeholder="JohnCro91@example.com"
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
