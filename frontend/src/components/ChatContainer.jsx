@@ -16,17 +16,24 @@ const ChatContainer = () => {
     subscribeToMessages,
     unsubscribeFromMessages,
   } = useChatStore();
-  const { authUser } = useAuthStore();
+  const { authUser, isCheckingAuth } = useAuthStore(); // add isCheckingAuth for initial loading
   const messageEndRef = useRef(null);
 
   useEffect(() => {
-    getMessages(selectedUser._id);
+    if (selectedUser?._id && authUser?._id) {
+      getMessages(selectedUser._id);
+      subscribeToMessages();
+    }
 
-    subscribeToMessages();
-
-    return () => unsubscribeFromMessages(); // Cleanup function to unsubscribe from messages when the component unmounts
-  }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
-
+    return () => unsubscribeFromMessages();
+  }, [
+    selectedUser?._id,
+    authUser?._id, // make sure authUser is loaded
+    getMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
+  
   useEffect(() => {
     if (messageEndRef.current && messages) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
