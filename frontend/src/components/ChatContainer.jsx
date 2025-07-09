@@ -19,21 +19,26 @@ const ChatContainer = () => {
   const { authUser, isCheckingAuth } = useAuthStore(); // add isCheckingAuth for initial loading
   const messageEndRef = useRef(null);
 
-  useEffect(() => {
-    if (selectedUser?._id && authUser?._id) {
-      getMessages(selectedUser._id);
-      subscribeToMessages();
-    }
+ useEffect(() => {
+  if (
+    !isCheckingAuth && // Wait until auth check is done
+    selectedUser?._id &&
+    authUser?._id
+  ) {
+    getMessages(selectedUser._id);
+    subscribeToMessages();
+  }
 
-    return () => unsubscribeFromMessages();
-  }, [
-    selectedUser?._id,
-    authUser?._id, // make sure authUser is loaded
-    getMessages,
-    subscribeToMessages,
-    unsubscribeFromMessages,
-  ]);
-  
+  return () => unsubscribeFromMessages();
+}, [
+  isCheckingAuth, // Add this dependency
+  selectedUser?._id,
+  authUser?._id,
+  getMessages,
+  subscribeToMessages,
+  unsubscribeFromMessages,
+]);
+
   useEffect(() => {
     if (messageEndRef.current && messages) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
