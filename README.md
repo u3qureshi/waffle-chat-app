@@ -3,6 +3,8 @@ A **real-time chat application** with user authentication, profile management, t
 
 🌐 **Live Demo**: [waffle-chat-app.onrender.com](https://waffle-chat-app.onrender.com)  
 
+<video src="demo.mp4" autoplay loop muted playsinline></video>
+
 --------------
 
 ## ✨ Features
