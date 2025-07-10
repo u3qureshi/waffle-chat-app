@@ -61,6 +61,7 @@ A **real-time chat application** with user authentication, profile management, t
 
 | 🖥 Chat Page | 
 |-----------|
+| ![Chat Page](readme/landing2.jpeg) |
 | ![Chat Page](readme/chat.jpeg) |
 
 | 🖥 Login Page | 
