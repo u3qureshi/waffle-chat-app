@@ -5,7 +5,7 @@ A **real-time chat application** with user authentication, profile management, t
 
 🎥 [Waffle Chat Demo](https://youtu.be/fOUspyVp_eo)
 
-<iframe width="560" height="315" src="https://youtu.be/fOUspyVp_eo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Watch the video](https://img.youtube.com/vi/_5tFXJQIzi4/0.jpg)](https://www.youtube.com/watch?v=_5tFXJQIzi4)
 
 --------------
 
